@@ -25,10 +25,19 @@ class Livro(models.Model):
     def __str__(self):
         return self.titulo
 
-    def salvar(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.isbn:
-            self.isbn = str(uuid.uuid4().int)[:13]  # Gera um ISBN único de 13 dígitos
+            self.isbn = str(uuid.uuid4().int)[:13]  
         # Garanta que a quantidade disponível não exceda a quantidade total.
         if self.quantidade_disponivel > self.quantidade_total:
             self.quantidade_disponivel = self.quantidade_total
         super().save(*args, **kwargs)
+
+    def esta_disponivel(self):
+        return self.quantidade_disponivel > 0
+
+    class Meta:
+        verbose_name = "Livro"
+        verbose_name_plural = "Livros"
+        ordering = ['titulo']
+        
