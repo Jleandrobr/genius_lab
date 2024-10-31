@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 
+
 class Livro(models.Model):
     GENEROS = [
         ('Ficcao', 'Ficção'),
@@ -14,7 +15,7 @@ class Livro(models.Model):
 
     titulo = models.CharField(max_length=255, verbose_name="Título do Livro")
     autor = models.CharField(max_length=255, verbose_name="Autor")
-    isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
+    isbn = models.CharField(max_length=13, unique=True, editable=False, verbose_name="ISBN")
     editora = models.CharField(max_length=255, verbose_name="Editora")
     ano_publicacao = models.PositiveIntegerField(verbose_name="Ano de Publicação")
     genero = models.CharField(max_length=50, choices=GENEROS, verbose_name="Gênero")
@@ -25,10 +26,10 @@ class Livro(models.Model):
     def __str__(self):
         return self.titulo
 
-    def salvar(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.isbn:
-            self.isbn = str(uuid.uuid4().int)[:13]  # Gera um ISBN único de 13 dígitos
-        # Garanta que a quantidade disponível não exceda a quantidade total.
+            self.isbn = str(uuid.uuid4().int)[:13] # Gera um ISBN aleatório de 13 dígitos
+
         if self.quantidade_disponivel > self.quantidade_total:
             self.quantidade_disponivel = self.quantidade_total
         super().save(*args, **kwargs)
