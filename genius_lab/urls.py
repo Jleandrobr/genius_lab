@@ -16,15 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from livros.views import home, listagem
-from emprestimo.views import listagem
+from livros.views import listagem
+from home import urls as home_urls
+# from emprestimo.views import listagem
 from livros import urls as livros_urls
 from emprestimo import urls as emprestimo_urls
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("home/", home),
-    path("", listagem, name="url_listagem"),
+    path("", include(home_urls)),
+    path("list/", listagem, name="url_listagem"),
     path("livros/", include(livros_urls)),
     path("emprestimo/", include(emprestimo_urls)),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

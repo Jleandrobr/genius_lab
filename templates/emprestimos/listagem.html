@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listagem de Empréstimos</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Listagem de emprestimo{% endblock %}
+
+{% block content %} 
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+    </form>
+    
     <h1>Listagem de Empréstimos</h1>
     <br>
 
@@ -17,7 +21,9 @@
                     <ul>
                         <li>Status: {{ emprestimo.status }}</li>
                         <li>Data de empréstimo: {{ emprestimo.data_emprestimo }}</li>
-                        <li>Data de devolução: {{ emprestimo.data_devolucao }}</li>
+                        {% if emprestimo.data_devolucao %}
+                            <li>Data de devolução: {{ emprestimo.data_devolucao }}</li>
+                        {% endif %}
                         <li>Data prevista de devolução: {{ emprestimo.data_prevista_devolucao }}</li>
                     </ul>
 
@@ -25,7 +31,7 @@
                         <form method="POST" action="{% url 'devolver_livro' %}">
                             {% csrf_token %}
                             <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
-                            <button type="submit">Devolver</button>
+                            <button type="submit" class="btn btn-primary">Devolver</button>
                         </form>
                     {% endif %}
                     
@@ -43,6 +49,7 @@
         {% endfor %}
     {% endif %}
 
-    <a href="{% url 'cadastro_emprestimo' %}">Cadastrar empréstimo</a>
-</body>
-</html>
+    <button type="button"  class="btn btn-secondary" onclick="window.location.href='{% url 'cadastro_emprestimo' %}';">Cadastrar empréstimo</button>
+
+
+{% endblock %}
