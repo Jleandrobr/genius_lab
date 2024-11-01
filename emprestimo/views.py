@@ -16,7 +16,7 @@ def cadastro_emprestimo(request):
     form = EmprestimoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect('url_listagem_emprestimo')
+        return redirect('listagem_emprestimo')
     
     return render(request, 'emprestimos/cadastro.html', {'form': form})
 
@@ -25,9 +25,8 @@ def devolver_livro(request):
         emprestimo_id = request.POST.get('emprestimo_id')
         emprestimo = get_object_or_404(Emprestimo, id=emprestimo_id)
         
-        # Chama o método para registrar a devolução
         emprestimo.registrar_devolucao()
         
         messages.success(request, "Devolução registrada com sucesso!")
-        return redirect('url_listagem_emprestimo')
+        return redirect('listagem_emprestimo')
 
