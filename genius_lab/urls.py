@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from livros.views import home, listagem, cadastro_livro
+from emprestimo.views import listagem, cadastro_emprestimo, devolver_livro
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("home/", home),
     path("", listagem, name="url_listagem"),
-    path("cadastro/", cadastro_livro, name="url_cadastro_livro"),
+    path("cadastro_livro/", cadastro_livro, name="url_cadastro_livro"),
+    path("emprestimo/", listagem, name="url_listagem_emprestimo"),
+    path("cadastro_emprestimo/", cadastro_emprestimo, name="url_cadastro_emprestimo"),
+    path("devolver_livro/", devolver_livro, name="devolver_livro"),
 ]

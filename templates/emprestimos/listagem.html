@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Empréstimos</title>
+</head>
+<body>
+    <h1>Listagem de Empréstimos</h1>
+    <br>
+
+    {% if emprestimos %}
+        <ul>
+            {% for emprestimo in emprestimos %}
+                <li>
+                    <strong>Nome do livro:</strong> {{ emprestimo.livro.titulo }}
+                    <ul>
+                        <li>Status: {{ emprestimo.status }}</li>
+                        <li>Data de empréstimo: {{ emprestimo.data_emprestimo }}</li>
+                        <li>Data de devolução: {{ emprestimo.data_devolucao }}</li>
+                        <li>Data prevista de devolução: {{ emprestimo.data_prevista_devolucao }}</li>
+                    </ul>
+
+                    {% if emprestimo.status != 'Finalizado' %}
+                        <form method="POST" action="{% url 'devolver_livro' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
+                            <button type="submit">Devolver</button>
+                        </form>
+                    {% endif %}
+                    
+                    <br>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhum empréstimo cadastrado</p>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'url_cadastro_emprestimo' %}">Cadastrar empréstimo</a>
+</body>
+</html>

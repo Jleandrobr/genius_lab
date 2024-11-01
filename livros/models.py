@@ -33,3 +33,6 @@ class Livro(models.Model):
         if self.quantidade_disponivel > self.quantidade_total:
             self.quantidade_disponivel = self.quantidade_total
         super().save(*args, **kwargs)
+
+    def esta_disponivel(self):
+        return self.quantidade_disponivel > 0
