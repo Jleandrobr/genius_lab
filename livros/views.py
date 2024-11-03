@@ -20,6 +20,6 @@ def cadastro_livro(request):
     form = LivroForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect('url_listagem')
+        return redirect('listagem_livro')
 
     return render(request, 'livros/cadastro.html', {'form': form})
