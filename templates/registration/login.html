@@ -7,16 +7,25 @@
 
 {% block content %} 
 
-    <div class="container">
-    <h2>Login</h2>
-    <form method="POST">
+<div class="col-md-4">
+    <form method="post">
         {% csrf_token %}
-        
-        {{ form|bootstrap }}
-        <br>
-        <button type="submit" class="btn btn-info">Login</button>
-    </form>
 
+        <div class="mb-3">
+            <label class="form-label" for="id_username">Usuário:</label>
+            <input type="text" name="username" class="form-control">
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="id_password">Senha:</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+
+        <button class="btn btn-info" type="submit">Entrar</button>
+    </form>
+    
+    <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
 </div>
+
 
 {% endblock %}
