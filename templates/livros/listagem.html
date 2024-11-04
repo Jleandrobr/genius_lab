@@ -6,19 +6,43 @@
 
 {% block content %} 
 
+<div class="container mt-5">
     <h1>Listagem de Livros</h1>
-
-    <br>
     
-   <ul>{% for livro in livros %}
-    <li>Titulo: {{ livro.titulo }}</li>
-    <ul>
-        <li>Autor: {{ livro.autor }}</li>
-        <li>Editora: {{ livro.editora }}</li>
-        <li>Ano de lançamento: {{ livro.ano_publicacao }}</li>
-        <br>
-    </ul>
-    {% endfor %}</ul>
-
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th scope="col">Capa</th>
+                <th scope="col">Título</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Editora</th>
+                <th scope="col">Ano de Lançamento</th>
+                <th scope="col">Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livro in livros %}
+            <tr>
+                <td>
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="Capa do Livro" width="50" height="75">
+                    {% else %}
+                        <span>Sem capa</span>
+                    {% endif %}
+                </td>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.autor }}</td>
+                <td>{{ livro.editora }}</td>
+                <td>{{ livro.ano_publicacao }}</td>
+                <td>
+                    <a href="{% url 'cadastro_livro' %}" class="btn btn-success btn-sm">
+                        <i class="bi bi-plus-lg"></i> Adicionar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

@@ -17,7 +17,7 @@ def listagem(request):
 
 @login_required
 def cadastro_livro(request):
-    form = LivroForm(request.POST or None)
+    form = LivroForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
         return redirect('listagem_livro')

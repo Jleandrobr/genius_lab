@@ -19,6 +19,7 @@ class Livro(models.Model):
     editora = models.CharField(max_length=255, verbose_name="Editora")
     ano_publicacao = models.PositiveIntegerField(verbose_name="Ano de Publicação")
     genero = models.CharField(max_length=50, choices=GENEROS, verbose_name="Gênero")
+    capa = models.ImageField(upload_to="capas", null=True, blank=True, verbose_name="Capa do Livro")
     quantidade_total = models.PositiveIntegerField(verbose_name="Quantidade Total")
     quantidade_disponivel = models.PositiveIntegerField(verbose_name="Quantidade Disponível", default=0)
     descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")

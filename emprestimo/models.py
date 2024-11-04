@@ -1,12 +1,14 @@
 from django.db import models
 from livros.models import Livro
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Emprestimo(models.Model):
     STATUS = [
         ('Em análise', 'Em análise'),
         ('Emprestado', 'Emprestado'),
+        ('Recusado', 'Recusado'),
         ('Finalizado', 'Finalizado'),
     ]
 
@@ -15,10 +17,10 @@ class Emprestimo(models.Model):
     data_prevista_devolucao = models.DateTimeField(null=True, blank=True, verbose_name="Data Prevista de Devolução")
     status = models.CharField(max_length=50, choices=STATUS, verbose_name="Status")
     livro = models.ForeignKey('livros.Livro', on_delete=models.CASCADE, verbose_name="Livro")
-    # usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, verbose_name="Usuário")
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
 
     def __str__(self):
-        return f"{self.livro} - "
+        return f"{self.livro} - {self.status}"
     
     def solicitar_emprestimo(self):
         self.status = 'Em análise'

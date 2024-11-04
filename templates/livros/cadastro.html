@@ -10,7 +10,7 @@
    
         <!-- {{ form|bootstrap }} -->
 
-        <form method="POST" >
+        <form method="POST" enctype="multipart/form-data">
             <div class="row g-3">
             <h2>Cadastro de Livros</h2>
             {% csrf_token %}
@@ -42,7 +42,10 @@
                 <label for="quantidade disponivel" class="form-label">Quantidade Disponível</label>
                 {{ form.quantidade_disponivel }}
             </div>
-            
+            <div class="col-2">
+                <label for="capa" class="form-label">Capa</label>
+                {{ form.capa }}
+            </div>
             <div class="col-8">
                 <label for="descricao" class="form-label">Descrição</label>
                 {{ form.descricao }}
