@@ -9,7 +9,7 @@ from emprestimo.form import EmprestimoForm
 from .models import Livro
 from .models import Emprestimo
 
-@login_required
+@login_required(login_url='login')
 def listagem(request):
     emprestimos = Emprestimo.objects.all()
     return render(request, 'emprestimos/listagem.html', {'emprestimos': emprestimos})
@@ -32,5 +32,28 @@ def devolver_livro(request):
         emprestimo.registrar_devolucao()
         
         messages.success(request, "Devolução registrada com sucesso!")
+        return redirect('listagem_emprestimo')
+    
+
+@login_required()
+def aprovar_emprestimo(request):
+    if request.method == 'POST':
+        emprestimo_id = request.POST.get('emprestimo_id')
+        emprestimo = get_object_or_404(Emprestimo, id=emprestimo_id)
+        
+        emprestimo.aprovar_emprestimo()
+        
+        messages.success(request, "Empréstimo aprovado com sucesso!")
+        return redirect('listagem_emprestimo')
+    
+@login_required
+def recusar_emprestimo(request):
+    if request.method == 'POST':
+        emprestimo_id = request.POST.get('emprestimo_id')
+        emprestimo = get_object_or_404(Emprestimo, id=emprestimo_id)
+        
+        emprestimo.recusar_emprestimo()
+        
+        messages.success(request, "Empréstimo recusado com sucesso!")
         return redirect('listagem_emprestimo')
 

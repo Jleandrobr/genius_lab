@@ -44,6 +44,12 @@ class Emprestimo(models.Model):
         self.data_prevista_devolucao = timezone.now() + timezone.timedelta(days=7)
         self.save()
 
+    def recusar_emprestimo(self):
+        self.status = 'Recusado'
+        self.livro.quantidade_disponivel += 1
+        self.livro.save()
+        self.save()
+
     def registrar_devolucao(self):
         self.data_devolucao = timezone.now().date()
         self.status = 'Finalizado'

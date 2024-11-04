@@ -29,7 +29,7 @@ from accounts import urls as accounts_urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(home_urls)),
-    path("list/", listagem, name="url_listagem"),
+    path("list/", listagem, name="url_listagem"),   
     path("livros/", include(livros_urls)),
     path("emprestimo/", include(emprestimo_urls)),
     # path('login/', auth_views.LoginView.as_view(), name='login'),
