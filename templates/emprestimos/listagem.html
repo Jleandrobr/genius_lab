@@ -1,44 +1,55 @@
 {% extends "base.html" %}
-
 {% load static %}
 
-{% block title %}Listagem de emprestimo{% endblock %}
+{% block title %}Listagem de Empréstimos{% endblock %}
 
-{% block content %} 
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Sair</button>
-    </form>
+{% block content %}
+
     
-    <h1>Listagem de Empréstimos</h1>
+    <h1>Empréstimos</h1>
     <br>
 
     {% if emprestimos %}
-        <ul>
-            {% for emprestimo in emprestimos %}
-                <li>
-                    <strong>Nome do livro:</strong> {{ emprestimo.livro.titulo }}
-                    <ul>
-                        <li>Status: {{ emprestimo.status }}</li>
-                        <li>Data de empréstimo: {{ emprestimo.data_emprestimo }}</li>
-                        {% if emprestimo.data_devolucao %}
-                            <li>Data de devolução: {{ emprestimo.data_devolucao }}</li>
-                        {% endif %}
-                        <li>Data prevista de devolução: {{ emprestimo.data_prevista_devolucao }}</li>
-                    </ul>
-
-                    {% if emprestimo.status != 'Finalizado' %}
-                        <form method="POST" action="{% url 'devolver_livro' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
-                            <button type="submit" class="btn btn-primary">Devolver</button>
-                        </form>
-                    {% endif %}
-                    
-                    <br>
-                </li>
-            {% endfor %}
-        </ul>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome do Livro</th>
+                    <th>Status</th>
+                    <th>Data de Empréstimo</th>
+                    <th>Data de Devolução</th>
+                    <th>Usuário</th>
+                    <th>Data Prevista de Devolução</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    <tr>
+                        <td>{{ emprestimo.livro.titulo }}</td>
+                        <td>{{ emprestimo.status }}</td>
+                        <td>{{ emprestimo.data_emprestimo }}</td>
+                        <td>
+                            {% if emprestimo.data_devolucao %}
+                                {{ emprestimo.data_devolucao }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ emprestimo.usuario }}</td>
+                        <td>{{ emprestimo.data_prevista_devolucao }}</td>
+                        <td>
+                            {% if emprestimo.status != 'Finalizado' %}
+                                <form method="POST" action="{% url 'devolver_livro' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Devolver</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
         <p>Nenhum empréstimo cadastrado</p>
     {% endif %}
@@ -49,7 +60,5 @@
         {% endfor %}
     {% endif %}
 
-    <button type="button"  class="btn btn-secondary" onclick="window.location.href='{% url 'cadastro_emprestimo' %}';">Cadastrar empréstimo</button>
-
-
+    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'cadastro_emprestimo' %}';">Cadastrar Empréstimo</button>
 {% endblock %}
