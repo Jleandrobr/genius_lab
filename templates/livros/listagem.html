@@ -35,14 +35,19 @@
                 <td>{{ livro.editora }}</td>
                 <td>{{ livro.ano_publicacao }}</td>
                 <td>
-                    <a href="{% url 'cadastro_livro' %}" class="btn btn-success btn-sm">
-                        <i class="bi bi-plus-lg"></i> Adicionar
-                    </a>
+                    <form method="POST" action="{% url 'solicitar_emprestimo' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="livro_id" value="{{ livro.id }}">
+                        <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Solicitar Empresitimo"><i class="bi bi-plus-lg"></i></button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'cadastro_livro' %}" class="btn btn-success btn-sm">
+        <i class="bi bi-plus-lg"></i> Cadastrar livro
+    </a>
 </div>
 
 {% endblock %}

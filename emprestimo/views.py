@@ -33,7 +33,7 @@ def devolver_livro(request):
         
         messages.success(request, "Devolução registrada com sucesso!")
         return redirect('listagem_emprestimo')
-    
+
 
 @login_required()
 def aprovar_emprestimo(request):
