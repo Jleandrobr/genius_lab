@@ -30,8 +30,9 @@ def cadastro_emprestimo(request):
 def devolver_livro(request):
     if request.method == 'POST':
         emprestimo_id = request.POST.get('emprestimo_id')
+        observacao = request.POST.get('observacao')
         emprestimo = get_object_or_404(Emprestimo, id=emprestimo_id)
-        
+        emprestimo.observacao = observacao
         emprestimo.registrar_devolucao()
         
         messages.success(request, "Devolução registrada com sucesso!")

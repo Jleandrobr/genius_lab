@@ -18,6 +18,7 @@ class Emprestimo(models.Model):
     status = models.CharField(max_length=50, choices=STATUS, verbose_name="Status")
     livro = models.ForeignKey('livros.Livro', on_delete=models.CASCADE, verbose_name="Livro")
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
+    observacao = models.TextField(null=True, blank=True, verbose_name="Observação")
 
     def __str__(self):
         return f"{self.livro} - {self.status}"
@@ -53,6 +54,7 @@ class Emprestimo(models.Model):
     def registrar_devolucao(self):
         self.data_devolucao = timezone.now().date()
         self.status = 'Finalizado'
+        self.observacao = self.observacao
         self.livro.quantidade_disponivel += 1
         self.livro.save()
         self.save()
