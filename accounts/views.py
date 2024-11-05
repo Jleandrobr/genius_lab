@@ -8,6 +8,7 @@ def register(request):
     form = CustomUserCreationForm()
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
+        
         if form.is_valid():
             user = form.save()
             user.is_valid = False

@@ -4,29 +4,37 @@
 {% block title %}Listagem de Empréstimos{% endblock %}
 
 {% block content %}
-    
+    <div class="container mt-5">
     <h1>Empréstimos</h1>
-    <br>
 
     {% if emprestimos %}
-        <table class="table table-striped">
+        <table class="table table-striped mt-4">
             <thead>
                 <tr>
+                    <th>Capa</th>
                     <th>Nome do Livro</th>
                     <th>Status</th>
                     <th>Data de Empréstimo</th>
                     <th>Data de Devolução</th>
-                    <th>Usuário</th>
-                    <th>Data Prevista de Devolução</th>
-                    <th>Ações</th>
                     {% if user.is_superuser %}
-                    <th>Julgar</th>
+                    <th>Usuário</th>
+                    {% endif %}
+                    <th>Data Prevista de Devolução</th>
+                    <th>Devolver Livro</th>
+                    {% if user.is_superuser %}
+                    <th>Gerenciar</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for emprestimo in emprestimos %}
                     <tr>
+                        <td>
+                            {% if emprestimo.livro.capa %}
+                                <img src="{{ emprestimo.livro.capa.url }}" alt="Capa do Livro" width="50" height="75">
+                            {% else %}
+                                <span>Sem capa</span>
+                            {% endif %}
                         <td>{{ emprestimo.livro.titulo }}</td>
                         <td>{{ emprestimo.status }}</td>
                         <td>{{ emprestimo.data_emprestimo }}</td>
@@ -37,11 +45,13 @@
                                 -
                             {% endif %}
                         </td>
+                        {% if user.is_superuser %}
                         <td>{{ emprestimo.usuario }}</td>
+                        {% endif %}
                         <td>{{ emprestimo.data_prevista_devolucao }}</td>
-                        <td>
+                        <td class="text-center">
                             {% if emprestimo.status == 'Emprestado' %}
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#devolverModal{{ emprestimo.id }}">Devolver</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#devolverModal{{ emprestimo.id }}"><i class="bi bi-arrow-90deg-up"></i></button>
                                 <div class="modal fade" id="devolverModal{{ emprestimo.id }}" tabindex="-1" aria-labelledby="devolverModalLabel{{ emprestimo.id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -76,11 +86,11 @@
                                 <form method="POST" action="{% url 'aprovar_emprestimo' %}" style="display: inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
-                                    <button type="submit" class="btn btn-success btn-sm">Aprovar</button>
+                                    <button type="submit" class="btn btn-success btn-sm"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Aprovar Empréstimo"><i class="bi bi-check-lg"></i></button>
                                 </form>
                                 <form method="POST" action="{% url 'recusar_emprestimo' %}" style="display: inline;">
                                     {% csrf_token %}
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{ emprestimo.id }}">Recusar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{ emprestimo.id }}"><i class="bi bi-dash-circle-dotted"></i></button>
                                     <div class="modal fade" id="modal{{ emprestimo.id }}" tabindex="-1" aria-labelledby="modal{{ emprestimo.id }}Label" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -123,4 +133,5 @@
     {% if user.is_superuser %}
     <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'cadastro_emprestimo' %}';">Cadastrar Empréstimo</button>
     {% endif %}
+    </div>
 {% endblock %}

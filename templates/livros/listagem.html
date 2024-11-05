@@ -7,7 +7,7 @@
 {% block content %} 
 
 <div class="container mt-5">
-    <h1>Listagem de Livros</h1>
+    <h1>Livros</h1>
     
     <table class="table table-striped mt-4">
         <thead>
@@ -20,7 +20,7 @@
                 <th scope="col">Ação</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for livro in livros %}
             <tr>
                 <td>
@@ -38,7 +38,7 @@
                     <form method="POST" action="{% url 'solicitar_emprestimo' %}" style="display: inline;">
                         {% csrf_token %}
                         <input type="hidden" name="livro_id" value="{{ livro.id }}">
-                        <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Solicitar Empresitimo"><i class="bi bi-plus-lg"></i></button>
+                        <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Solicitar Empréstimo"><i class="bi bi-bookmark-plus"></i></i></button>
                     </form>
                 </td>
             </tr>
