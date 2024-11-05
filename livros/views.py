@@ -22,6 +22,11 @@ def solicitar_emprestimo(request):
     if request.method == 'POST':
         livro_id = request.POST.get('livro_id')
         livro = get_object_or_404(Livro, id=livro_id)
+
+        if not livro.esta_disponivel():
+            messages.error(request, "Este livro não está disponível para empréstimo.")
+            return redirect('listagem_emprestimo')
+        
         emprestimo = Emprestimo(livro=livro, usuario=request.user)
         emprestimo.save()
         

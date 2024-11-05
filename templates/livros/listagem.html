@@ -45,9 +45,21 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if not livros %}
+        <p>Nenhum livro cadastrado</p>
+    {% endif %}
+    
+    {% if user.is_superuser %}
     <a href="{% url 'cadastro_livro' %}" class="btn btn-success btn-sm">
         <i class="bi bi-plus-lg"></i> Cadastrar livro
     </a>
+    {% endif %}
 </div>
 
 {% endblock %}
