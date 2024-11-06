@@ -67,19 +67,23 @@ def livro_inativar(request, id):
 
 @login_required
 def solicitar_emprestimo(request):
-    if request.method == 'POST':
-        livro_id = request.POST.get('livro_id')
-        livro = get_object_or_404(Livro, id=livro_id)
-
-        if not livro.esta_disponivel():
-            messages.error(request, "Este livro não está disponível para empréstimo.")
-            return redirect('listagem_emprestimo')
-        
-        emprestimo = Emprestimo(livro=livro, usuario=request.user)
-        emprestimo.save()
-        
-        messages.success(request, "Empréstimo solicitado com sucesso!")
+    if request.user.is_authenticated == False:
+        messages.error(request, "Você precisa estar logado para solicitar um empréstimo.")
         return redirect('listagem_emprestimo')
+    else:
+        if request.method == 'POST':
+            livro_id = request.POST.get('livro_id')
+            livro = get_object_or_404(Livro, id=livro_id)
+
+            if not livro.esta_disponivel():
+                messages.error(request, "Este livro não está disponível para empréstimo.")
+                return redirect('listagem_emprestimo')
+            
+            emprestimo = Emprestimo(livro=livro, usuario=request.user)
+            emprestimo.save()
+            
+            messages.success(request, "Empréstimo solicitado com sucesso!")
+            return redirect('listagem_emprestimo')
 
 @login_required
 def cadastro_livro(request):
