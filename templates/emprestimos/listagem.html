@@ -7,6 +7,42 @@
     <div class="container mt-5">
     <h1>Empréstimos</h1>
 
+    <div class="p-3 mb-4 bg-light border rounded">
+        <form method="GET" action="{% url 'filtros_emprestimos' %}">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="nome_livro" class="form-label">Nome do Livro</label>
+                    <input type="text" class="form-control" id="nome_livro" name="nome_livro" placeholder="Pesquisar por nome do livro" value="{{ request.GET.nome_livro }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">Todos</option>
+                        <option value="Emprestado" {% if request.GET.status == "Emprestado" %}selected{% endif %}>Emprestado</option>
+                        <option value="Em análise" {% if request.GET.status == "Em análise" %}selected{% endif %}>Em análise</option>
+                        <option value="Recusado" {% if request.GET.status == "Recusado" %}selected{% endif %}>Recusado</option>
+                        <option value="Finalizado" {% if request.GET.status == "Finalizado" %}selected{% endif %}>Finalizado</option>
+                    </select>
+                </div>
+                {% if user.is_superuser %}
+                <div class="col-md-4 mb-3">
+                    <label for="usuario" class="form-label">Usuário</label>
+                    <select class="form-select" id="usuario" name="usuario">
+                        <option value="">Todos</option>
+                        {% for usuario in usuarios %}
+                            <option value="{{ usuario.id }}" {% if request.GET.usuario == usuario.id|stringformat:"s" %}selected{% endif %}>{{ usuario.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i>Filtrar</button>
+        </form>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p>Exibindo {{ emprestimos|length }} de {{ emprestimos.paginator.count }} emprestimo</p>
+    </div>
+
     {% if emprestimos %}
         <table class="table table-striped mt-4">
             <thead>

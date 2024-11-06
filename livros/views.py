@@ -17,6 +17,28 @@ def listagem(request):
     livros = Livro.objects.all()
     return render(request, 'livros/listagem.html', {'livros': livros})
 
+def filtros_livros(request):
+    livros = Livro.objects.all()
+
+    # captura os parametros de busca
+    titulo = request.GET.get('titulo', '')
+    autor = request.GET.get('autor', '')
+    ano_publicacao = request.GET.get('ano_publicacao', '')
+    editora = request.GET.get('editora', '')
+
+    # aplica o filtro caso os campos estejam preenchidos
+    if titulo:
+        livros = livros.filter(titulo__icontains=titulo)
+    if autor:
+        livros = livros.filter(autor__icontains=autor)
+    if ano_publicacao:
+        livros = livros.filter(ano_publicacao=ano_publicacao)
+    if editora:
+        livros = livros.filter(editora__icontains=editora)
+
+    
+    return render(request, 'livros/listagem.html', {'livros': livros})
+
 @login_required
 def solicitar_emprestimo(request):
     if request.method == 'POST':

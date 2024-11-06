@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 import datetime
+from django.contrib.auth.models import User
 
 from emprestimo.form import EmprestimoForm
 from .models import Livro
@@ -16,6 +17,33 @@ def listagem(request):
     else:
         emprestimos = Emprestimo.objects.filter(usuario=request.user)
     return render(request, 'emprestimos/listagem.html', {'emprestimos': emprestimos})
+
+@login_required(login_url='login')
+def filtros_emprestimos(request):
+    usuarios = User.objects.all()
+
+    if request.user.is_superuser:
+        emprestimos = Emprestimo.objects.all()
+    else:
+        emprestimos = Emprestimo.objects.filter(usuario=request.user)
+
+    nome_livro = request.GET.get('nome_livro', '')
+    status = request.GET.get('status', '')
+    usuario_id = request.GET.get('usuario', '')
+
+    if nome_livro:
+        emprestimos = emprestimos.filter(livro__titulo__icontains=nome_livro)
+    
+    if status:
+        emprestimos = emprestimos.filter(status=status)
+
+    if usuario_id and request.user.is_superuser:
+        emprestimos = emprestimos.filter(usuario_id=usuario_id)
+
+    return render(request, 'emprestimos/listagem.html', {
+        'emprestimos': emprestimos,
+        'usuarios': usuarios,
+    })
 
 @login_required
 def cadastro_emprestimo(request):
