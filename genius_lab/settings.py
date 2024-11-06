@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "emprestimo",
     "home",
     "bootstrapform",
+    "rolepermissions",
 ]
 
 MIDDLEWARE = [
@@ -148,6 +149,8 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
+
+ROLEPERMISSIONS_MODULE = 'accounts.roles'
 
 
 

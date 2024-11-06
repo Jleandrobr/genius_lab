@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .form import CustomUserCreationForm
 
-# Create your views here.
 def register(request):
     form = CustomUserCreationForm()
     if request.method == "POST":
@@ -15,8 +14,6 @@ def register(request):
             user.save()
             messages.success(request, 'Registrado. Agora faça o login para começar!')
             return redirect('login')
-
-        else:
-            print('invalid registration details')
+        
             
     return render(request, "registration/register.html",{"form": form})
