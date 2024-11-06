@@ -48,6 +48,24 @@ def filtros_livros(request):
     return render(request, 'livros/listagem.html', {'page_obj': page_obj})
 
 @login_required
+def livro_update(request, id):
+    livro = get_object_or_404(Livro, id=id)
+    form = LivroForm(request.POST or None, request.FILES or None, instance=livro)
+    if form.is_valid():
+        form.save()
+        return redirect('listagem_livro')
+
+    return render(request, 'livros/cadastro.html', {'form': form})
+
+@login_required
+def livro_inativar(request, id):
+    livro = get_object_or_404(Livro, id=id)
+    livro.ativo = False
+    livro.save()
+    
+    return redirect('listagem_livro')
+
+@login_required
 def solicitar_emprestimo(request):
     if request.method == 'POST':
         livro_id = request.POST.get('livro_id')

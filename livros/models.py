@@ -23,6 +23,7 @@ class Livro(models.Model):
     quantidade_total = models.PositiveIntegerField(verbose_name="Quantidade Total")
     quantidade_disponivel = models.PositiveIntegerField(verbose_name="Quantidade Disponível", default=0)
     descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.titulo
@@ -37,3 +38,7 @@ class Livro(models.Model):
 
     def esta_disponivel(self):
         return self.quantidade_disponivel > 0
+    
+    def esta_ativo(self):
+        return self.ativo
+    

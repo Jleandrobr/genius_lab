@@ -46,6 +46,9 @@
                 <th scope="col">Editora</th>
                 <th scope="col">Ano de Lançamento</th>
                 <th scope="col">Ação</th>
+                {% if user.is_superuser %}
+                <th scope="col">Gerenciar</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -63,6 +66,7 @@
                 <td>{{ livro.editora }}</td>
                 <td>{{ livro.ano_publicacao }}</td>
                 <td>
+                    {% if livro.ativo %}
                     <form method="POST" action="{% url 'solicitar_emprestimo' %}" style="display: inline;">
                         {% csrf_token %}
                         <input type="hidden" name="livro_id" value="{{ livro.id }}">
@@ -70,7 +74,25 @@
                             <i class="bi bi-bookmark-plus"></i>
                         </button>
                     </form>
+                    {% else %}
+                    <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Solicitar Empréstimo" disabled>
+                        <i class="bi bi-bookmark-plus"></i>
+                    </button>
+                    {% endif %}
                 </td>
+                {% if user.is_superuser %}
+                <td>
+                    <a href="{% url 'update_livro' livro.id %}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Editar">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form method="POST" action="{% url 'inativar_livro' livro.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Inativar livro">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
@@ -114,4 +136,17 @@
     {% endif %}
 </div>
 
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-light py-4">
+    <div class="container text-center">
+    <p class="mb-0">&copy; 2024 Genius Lab. Todos os direitos reservados.</p>
+    <div class="d-flex justify-content-center gap-3 mt-2">
+        <a href="https://facebook.com" target="_blank" class="text-dark"><i class="bi bi-facebook"></i></a>
+        <a href="https://twitter.com" target="_blank" class="text-dark"><i class="bi bi-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank" class="text-dark"><i class="bi bi-instagram"></i></a>
+    </div>
+    </div>
+</footer>
 {% endblock %}
