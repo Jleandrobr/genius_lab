@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container mt-5">
-    <h1>Empréstimos</h1>
+    <h1 style="color: rgb(0, 0, 0);">Empréstimos</h1>
 
     <div class="p-3 mb-4 bg-light border rounded">
         <form method="GET" action="{% url 'filtros_emprestimos' %}">
@@ -50,7 +50,7 @@
         </form>
     </div>
     <div class="d-flex justify-content-between">
-        <p>Total {{ page_obj.paginator.count }} empréstimos</p>
+        <p style="color: rgb(0, 0, 0);">Total {{ page_obj.paginator.count }} empréstimos</p>
     </div>
 
     {% if page_obj %}

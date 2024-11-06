@@ -6,19 +6,25 @@
 
 {% block content %} 
 
-<h1>Seja bem vindo</h1>
+<style>
+    .btn-custom {
+        background-color: #007bff;
+        color: white;
+        margin: 10px;
+    }
+</style>
 
-    {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Sair</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-    {% endif %}
 
-    <br>
+<div class="container">
+    
+    <img src="{% static 'img/genius_lab.png' %}" alt="Gestão de Livros" class="header-icon">
+    
+    <h1 class="welcome-text">Bem-vindo ao Genius Lab</h1>
+    <p>Aqui você pode gerenciar facilmente os empréstimos e devoluções de livros.</p>
 
-    <img src="{% static 'img/ficoes.jpg' %}" alt="livros">
-
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'listagem_livro' %}" class="btn btn-custom">Ver Acervo de Livros</a>
+        <a href="{% url 'listagem_emprestimo' %}" class="btn btn-custom">Meus Empréstimos</a>
+    </div>
+</div>
 {% endblock %}

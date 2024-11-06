@@ -2,13 +2,82 @@
 
 {% block title %}Registrar{% endblock %}
 
-{% block content %} 
-<div class="col-md-4">
-    <h4>Criar uma conta</h4>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-warning mt-3" type="submit">Registrar</button>
-    </form>
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-200">
+    <div class="col-md-5 p-5 border rounded shadow-lg bg-light">
+        <h3 class="text-center mb-4">Criar uma conta</h3>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Usuário:</label>
+                <input type="text" name="username" maxlength="150" autofocus class="form-control" required id="id_username">
+            </div>
+
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Endereço de email:</label>
+                <input type="email" name="email" maxlength="254" class="form-control" id="id_email">
+            </div>
+
+            <div class="mb-3">
+                <label for="id_first_name" class="form-label">Primeiro nome:</label>
+                <input type="text" name="first_name" maxlength="150" class="form-control" id="id_first_name">
+            </div>
+
+            <div class="mb-3">
+                <label for="id_last_name" class="form-label">Último nome:</label>
+                <input type="text" name="last_name" maxlength="150" class="form-control" id="id_last_name">
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Senha:</label>
+                <input type="password" name="password1" autocomplete="new-password" class="form-control" id="id_password1">
+                <small class="form-text text-muted">
+                    <ul>
+                        <li>Sua senha não pode ser muito parecida com suas informações pessoais.</li>
+                        <li>Precisa ter pelo menos 8 caracteres.</li>
+                        <li>Não pode ser uma senha comumente usada.</li>
+                        <li>Não pode ser inteiramente numérica.</li>
+                    </ul>
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirmação de senha:</label>
+                <input type="password" name="password2" autocomplete="new-password" class="form-control" id="id_password2">
+                <small class="form-text text-muted">Informe a mesma senha para verificação.</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_endereco" class="form-label">Endereço:</label>
+                <input type="text" name="endereco" maxlength="255" class="form-control" id="id_endereco">
+            </div>
+
+            <div class="mb-3">
+                <label for="id_telefone" class="form-label">Telefone:</label>
+                <input type="text" name="telefone" maxlength="20" class="form-control" id="id_telefone">
+            </div>
+
+            {% if user.is_superuser %}
+            <div class="mb-3">
+                <label for="id_grupo" class="form-label">Grupo:</label>
+                <select name="grupo" class="form-select" id="id_grupo">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Leitor">Leitor</option>
+                </select>
+            </div>
+            {% else %}
+            <div class="mb-3">
+                <label for="id_grupo" class="form-label">Grupo:</label>
+                <select name="grupo" class="form-select" id="id_grupo">
+                    <option value="Leitor">Leitor</option>
+                </select>
+            </div>
+            {% endif %}
+
+            <button class="btn btn-primary w-100" type="submit">Registrar</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
