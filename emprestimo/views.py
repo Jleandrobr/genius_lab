@@ -18,6 +18,8 @@ def listagem(request):
     else:
         emprestimos = Emprestimo.objects.filter(usuario=request.user)
 
+    emprestimos = emprestimos.order_by('-data_emprestimo') # exibe os emprestimos mais recentes primeiro
+
     paginator = Paginator(emprestimos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -36,6 +38,8 @@ def filtros_emprestimos(request):
     nome_livro = request.GET.get('nome_livro', '')
     status = request.GET.get('status', '')
     usuario_id = request.GET.get('usuario', '')
+    data_inicial = request.GET.get('data_inicial')
+    data_final = request.GET.get('data_final')
 
     if nome_livro:
         emprestimos = emprestimos.filter(livro__titulo__icontains=nome_livro)
@@ -46,6 +50,16 @@ def filtros_emprestimos(request):
     if usuario_id and request.user.is_superuser:
         emprestimos = emprestimos.filter(usuario_id=usuario_id)
 
+    if data_inicial:
+        data_inicial = datetime.datetime.strptime(data_inicial, "%Y-%m-%d")
+        emprestimos = emprestimos.filter(data_emprestimo__gte=data_inicial)
+    
+    if data_final:
+        data_final = datetime.datetime.strptime(data_final, "%Y-%m-%d")
+        emprestimos = emprestimos.filter(data_emprestimo__lte=data_final)
+    
+    emprestimos = emprestimos.order_by('-data_emprestimo') # exibe os emprestimos mais recentes primeiro
+                                         
     paginator = Paginator(emprestimos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

@@ -35,6 +35,16 @@
                     </select>
                 </div>
                 {% endif %}
+                {% if user.is_superuser %}
+                <div class="col-md-4 mb-3">
+                    <label for="data_inicial" class="form-label">Data Inicial</label>
+                    <input type="date" class="form-control" id="data_inicial" name="data_inicial" value="{{ request.GET.data_inicial }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="data_final" class="form-label">Data Final</label>
+                    <input type="date" class="form-control" id="data_final" name="data_final" value="{{ request.GET.data_final }}">
+                </div>
+                {% endif %}               
             </div>
             <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i>Filtrar</button>
         </form>
