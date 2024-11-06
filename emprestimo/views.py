@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from emprestimo.form import EmprestimoForm
 from .models import Livro
 from .models import Emprestimo
+from django.core.paginator import Paginator
 
 @login_required(login_url='login')
 def listagem(request):
@@ -16,7 +17,12 @@ def listagem(request):
         emprestimos = Emprestimo.objects.all()
     else:
         emprestimos = Emprestimo.objects.filter(usuario=request.user)
-    return render(request, 'emprestimos/listagem.html', {'emprestimos': emprestimos})
+
+    paginator = Paginator(emprestimos, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'emprestimos/listagem.html', {'page_obj': page_obj})
 
 @login_required(login_url='login')
 def filtros_emprestimos(request):
@@ -40,8 +46,12 @@ def filtros_emprestimos(request):
     if usuario_id and request.user.is_superuser:
         emprestimos = emprestimos.filter(usuario_id=usuario_id)
 
+    paginator = Paginator(emprestimos, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     return render(request, 'emprestimos/listagem.html', {
-        'emprestimos': emprestimos,
+        'page_obj': page_obj,
         'usuarios': usuarios,
     })
 

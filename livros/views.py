@@ -7,6 +7,7 @@ from .models import Livro
 from emprestimo.models import Emprestimo
 from .form import LivroForm
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.paginator import Paginator
 
 def home(request):
     now = datetime.datetime.now()
@@ -15,7 +16,11 @@ def home(request):
 
 def listagem(request):
     livros = Livro.objects.all()
-    return render(request, 'livros/listagem.html', {'livros': livros})
+    paginator = Paginator(livros, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'livros/listagem.html', {'page_obj': page_obj})
 
 def filtros_livros(request):
     livros = Livro.objects.all()
@@ -36,8 +41,11 @@ def filtros_livros(request):
     if editora:
         livros = livros.filter(editora__icontains=editora)
 
-    
-    return render(request, 'livros/listagem.html', {'livros': livros})
+    paginator = Paginator(livros, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'livros/listagem.html', {'page_obj': page_obj})
 
 @login_required
 def solicitar_emprestimo(request):
