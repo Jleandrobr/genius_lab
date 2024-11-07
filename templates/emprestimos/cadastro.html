@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load bootstrap %}
+
+{% block title %}Cadastro de emprestimo{% endblock %}
+
+{% block content %} 
+    
+    <!-- <form method="POST">
+        {% csrf_token %}
+
+        {{form|bootstrap}}
+
+        <button type="submit" class="btn btn-secondary">Cadastrar</button>
+
+    </form> -->
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row align-items-start">
+            <h2>Cadastro de Empréstimo</h2>
+            {% csrf_token %}
+            <div class="col-6 col-sm-3">
+                <label for="livro" class="form-label">Livro</label>
+                {{ form.livro }}
+            </div>
+            <div class="col-6 col-sm-3">
+                <label for="usuario" class="form-label">Usuário</label>
+                {{ form.usuario }}
+            </div>            
+        </div>
+        <br>
+        
+        <button type="submit" class="btn btn-secondary">Cadastrar</button>
+
+    </form>
+
+{% endblock %}

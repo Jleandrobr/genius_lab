@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 
+
 class Livro(models.Model):
     GENEROS = [
         ('Ficcao', 'Ficção'),
@@ -14,30 +15,31 @@ class Livro(models.Model):
 
     titulo = models.CharField(max_length=255, verbose_name="Título do Livro")
     autor = models.CharField(max_length=255, verbose_name="Autor")
-    isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
+    isbn = models.CharField(max_length=13, unique=True, editable=False, verbose_name="ISBN")
     editora = models.CharField(max_length=255, verbose_name="Editora")
     ano_publicacao = models.PositiveIntegerField(verbose_name="Ano de Publicação")
     genero = models.CharField(max_length=50, choices=GENEROS, verbose_name="Gênero")
+    capa = models.ImageField(upload_to="capas", null=True, blank=True, verbose_name="Capa do Livro")
     quantidade_total = models.PositiveIntegerField(verbose_name="Quantidade Total")
     quantidade_disponivel = models.PositiveIntegerField(verbose_name="Quantidade Disponível", default=0)
     descricao = models.TextField(blank=True, null=True, verbose_name="Descrição")
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.titulo
 
     def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.isbn:
-            self.isbn = str(uuid.uuid4().int)[:13]  
-        # Garanta que a quantidade disponível não exceda a quantidade total.
+            self.isbn = str(uuid.uuid4().int)[:13] # Gera um ISBN aleatório de 13 dígitos
+
         if self.quantidade_disponivel > self.quantidade_total:
             self.quantidade_disponivel = self.quantidade_total
         super().save(*args, **kwargs)
 
     def esta_disponivel(self):
         return self.quantidade_disponivel > 0
-
-    class Meta:
-        verbose_name = "Livro"
-        verbose_name_plural = "Livros"
-        ordering = ['titulo']
-        
+    
+    def esta_ativo(self):
+        return self.ativo
+    

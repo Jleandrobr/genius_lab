@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% load static %}
+
+{% block title %}Cadastro de Livros{% endblock %}
+
+{% block content %} 
+
+   
+        <!-- {{ form|bootstrap }} -->
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row g-3">
+            <h2>Cadastro de Livros</h2>
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label for="titulo" class="form-label">Título</label>
+                {{ form.titulo }}
+            </div>
+            <div class="col-md-4">
+                <label for="autor" class="form-label">Autor</label>
+                {{ form.autor }}
+            </div>
+            <div class="col-2">
+                <label for="editora" class="form-label">Editora</label>
+                {{ form.editora }}
+            </div>
+            <div class="col-4">
+                <label for="ano" class="form-label">Ano de Publicação</label>
+                {{ form.ano_publicacao }}
+            </div>
+            <div class="col-4">
+                <label for="genero" class="form-label">Gênero</label>
+                {{ form.genero }}
+            </div>
+            <div class="col-2">
+                <checkbox for="ativo" class="form-label">Ativo</checkbox>
+                {{ form.ativo }}
+            </div>
+            <div class="col-4">
+                <label for="quantidade total" class="form-label">Quantidade Total</label>
+                {{ form.quantidade_total }}
+            </div>
+            <div class="col-2">
+                <label for="quantidade disponivel" class="form-label">Quantidade Disponível</label>
+                {{ form.quantidade_disponivel }}
+            </div>
+            <div class="col-2">
+                <label for="capa" class="form-label">Capa</label>
+                {{ form.capa }}
+            </div>
+            <div class="col-8">
+                <label for="descricao" class="form-label">Descrição</label>
+                {{ form.descricao }}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </div>
+            </div>
+        </form>
+
+    
+{% endblock %}

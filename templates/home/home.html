@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %} 
+
+<style>
+    .btn-custom {
+        background-color: #007bff;
+        color: white;
+        margin: 10px;
+    }
+</style>
+
+
+<div class="container">
+    
+    <img src="{% static 'img/genius_lab.png' %}" alt="Gestão de Livros" class="header-icon">
+    
+    <h1 class="welcome-text">Bem-vindo ao Genius Lab</h1>
+    <p>Aqui você pode gerenciar facilmente os empréstimos e devoluções de livros.</p>
+
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'listagem_livro' %}" class="btn btn-custom">Ver Acervo de Livros</a>
+        <a href="{% url 'listagem_emprestimo' %}" class="btn btn-custom">Meus Empréstimos</a>
+    </div>
+</div>
+{% endblock %}

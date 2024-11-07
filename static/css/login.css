@@ -1,0 +1,11 @@
+body {
+    background-color: #f0f2f5;
+}
+
+.vh-60 {
+    height: 60vh;
+}
+
+.shadow-lg {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}Listagem de Empréstimos{% endblock %}
+
+{% block content %}
+
+    
+    <h1>Empréstimos</h1>
+    <br>
+
+    {% if emprestimos %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome do Livro</th>
+                    <th>Status</th>
+                    <th>Data de Empréstimo</th>
+                    <th>Data de Devolução</th>
+                    <th>Usuário</th>
+                    <th>Data Prevista de Devolução</th>
+                    <th>Ações</th>
+                    <th>Julgar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    <tr>
+                        <td>{{ emprestimo.livro.titulo }}</td>
+                        <td>{{ emprestimo.status }}</td>
+                        <td>{{ emprestimo.data_emprestimo }}</td>
+                        <td>
+                            {% if emprestimo.data_devolucao %}
+                                {{ emprestimo.data_devolucao }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ emprestimo.usuario }}</td>
+                        <td>{{ emprestimo.data_prevista_devolucao }}</td>
+                        <td>
+                            {% if emprestimo.status == 'Emprestado' %}
+                                <form method="POST" action="{% url 'devolver_livro' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Devolver</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if emprestimo.status == 'Em análise' %}
+                                <form method="POST" action="{% url 'aprovar_emprestimo' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Aprovar</button>
+                                </form>
+                                <form method="POST" action="{% url 'recusar_emprestimo' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{ emprestimo.id }}">Recusar</button>
+                                    <div class="modal fade" id="modal{{ emprestimo.id }}" tabindex="-1" aria-labelledby="modal{{ emprestimo.id }}Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modal{{ emprestimo.id }}Label">Recusar Empréstimo</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Tem certeza que deseja recusar o empréstimo?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <form method="POST" action="{% url 'recusar_emprestimo' %}" style="display: inline;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="emprestimo_id" value="{{ emprestimo.id }}">
+                                                        <button type="submit" class="btn btn-danger">Recusar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum empréstimo cadastrado</p>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'cadastro_emprestimo' %}';">Cadastrar Empréstimo</button>
+{% endblock %}
