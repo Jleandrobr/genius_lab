@@ -40,32 +40,40 @@ Genius Lab é um sistema de gerenciamento de empréstimos de livros, desenvolvid
     ```bash
     cd genius_lab
     ```
+3. Ative seu virtual venv (na raiz do projeto)
+   ```bash
+   python -m venv venv
+   ```
+4. Navegue ate a pasta Script e ative a venv
 
-3. Instale as dependências:
+5. Instale as dependências:
 
     ```bash
     pip install -r requirements.txt
     ```
-
-4. Realize as migrações do banco de dados:
+6. Digite:
+   ```bash
+   python manage.py makemigrations
+   ```
+7. Realize as migrações do banco de dados:
 
     ```bash
     python manage.py migrate
     ```
 
-5. Crie um superusuário para acesso ao painel de administração:
+8. Crie um superusuário para acesso ao painel de administração:
 
     ```bash
     python manage.py createsuperuser
     ```
 
-6. Inicie o servidor de desenvolvimento:
+9. Inicie o servidor de desenvolvimento:
 
     ```bash
     python manage.py runserver
     ```
 
-7. Acesse o projeto em [http://localhost:8000](http://localhost:8000).
+9. Acesse o projeto em [http://localhost:8000](http://localhost:8000).
 
 
 
