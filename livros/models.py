@@ -29,7 +29,6 @@ class Livro(models.Model):
         return self.titulo
 
     def save(self, *args, **kwargs):
-    def save(self, *args, **kwargs):
         if not self.isbn:
             self.isbn = str(uuid.uuid4().int)[:13] # Gera um ISBN aleatório de 13 dígitos
 
